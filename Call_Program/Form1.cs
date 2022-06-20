@@ -600,11 +600,16 @@ namespace Call_Program
                     {
                         Message_Text = string.Format("Vehicle이 {0}로 이동 중 입니다.", STB.NAME);
                     }
-                    else if(AMR_Status.ToUpper().Contains("EXECUTE")== true)
+                    else if(AMR_Status.Contains("Executing") == true)
                     {
                         Message_Text = string.Format("Vehicle이 {0}로 이동 중 입니다.", STB.NAME);
                     }
-                    else if(AMR_Status.ToUpper().Contains("COMPLETE")== true)
+                    else if(AMR_Status.Contains("Completed") == true)
+                    {
+                        Message_Text = string.Format("{0}에 도착 했습니다.", STB.NAME);
+                        Text = "도착";
+                    }
+                    else if(AMR_Status.Contains("Arrived") == true)
                     {
                         Message_Text = string.Format("{0}에 도착 했습니다.", STB.NAME);
                     }
@@ -863,10 +868,12 @@ namespace Call_Program
             if (isCall == true)
             {
                 Message_Text = "이미 호출이 예약 되어 있습니다..";
+                Text = "이미 호출이 예약 되어 있습니다..";
             }
             else
             {
                 Message_Text = "호출이 예약 되어 있습니다..";
+                Text = "호출이 예약 되어 있습니다..";
                 isCall = true;
             }
             // 20220530 Direct
