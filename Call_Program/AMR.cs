@@ -266,7 +266,7 @@ namespace Call_Program
                     else if (str_buf[j].Contains("Status:"))
                     {
                         string[] str_temp = str_buf[j].Split(' ');
-                        AMR_STATUS = str_temp[1];
+                        AMR_STATUS = string.Join(",", str_temp);
                     }
                     else if (str_buf[j].Contains("Welcom") == true)
                     {

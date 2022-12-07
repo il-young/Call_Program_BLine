@@ -619,7 +619,7 @@ namespace Call_Program
                     
                     if (isCall == true)
                     {
-                        if(AMR_Status.ToUpper().Contains("DOCK") == true)
+                        if(AMR_Status.ToUpper().Contains("DOCKED") == true)
                         {
                             //aMR.Send();
                             aMR.Send(string.Format("executeMacro MOVE_{0}", STB.GOAL_NAME));
