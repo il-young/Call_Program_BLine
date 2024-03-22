@@ -13,6 +13,8 @@ using System.Threading;
 
 namespace Call_Program
 {
+
+    
     public class StateObject
     {
         // Client socket.  
@@ -77,6 +79,9 @@ namespace Call_Program
 
         private System.Windows.Forms.PictureBox pic_amr = new System.Windows.Forms.PictureBox();
 
+        public bool Call = false;
+        public bool MGZ = false;
+
         public AMR(string name, string ip, int port, string pw, string type, Point offset, PictureBox box)
         {
             AMR_NAME = name;
@@ -86,7 +91,6 @@ namespace Call_Program
             AMR_TYPE = type;
             map_offset = offset;
             pic_amr.Name = name;
-
 
             //IPEndPoint remoteIP = new IPEndPoint(AMR_IP, AMR_PORT);
             //SocketAsyncEventArgs args = new SocketAsyncEventArgs();
@@ -124,6 +128,7 @@ namespace Call_Program
             AMR_Client.set_end_str("\u000d\u000a");
             AMR_Client.set_send_delay(100);
             AMR_Client.receiv_event += AMR_Client_receiv_event;
+            
 
             AMR_Client.Connect();
 
@@ -218,8 +223,10 @@ namespace Call_Program
         private void ask_status()
         {
             try
-            {   
-                Send("status");                
+            {
+                //Send("status");                
+                Send("outputQuery CALL");
+                Send("outputQuery MGZ");
             }
             catch (Exception e)
             {
@@ -274,6 +281,19 @@ namespace Call_Program
 
                         if(bg_AMR.IsBusy == false)
                             bg_AMR.RunWorkerAsync();
+                    }
+                    else if(str_buf[j].Contains("Output:"))
+                    {
+                        string[] temp = str_buf[j].Split(' ');
+
+                        if(temp[1] == "CALL")
+                        {
+                            Call = temp[2].ToUpper() == "ON" ? true : false;
+                        }
+                        else if(temp[1] == "MGZ")
+                        {
+                            MGZ = temp[2].ToUpper() == "ON" ? true : false;
+                        }
                     }
                 }
             }

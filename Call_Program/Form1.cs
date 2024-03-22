@@ -65,27 +65,19 @@ namespace Call_Program
         {
             CheckForIllegalCrossThreadCalls = false;
 
+            Init();
+        }
+
+        private void Init()
+        {
             Read_Setting_Text();
 
             Call_Client.Set_IP(AMC_SRV.SRV_IP);
             Call_Client.Set_Port(int.Parse(AMC_SRV.SRV_PORT));
+            Call_Client.Connect();
             btn_Call.Text = aMR.Get_AMR_NAME() + " 호출";
-             
-            //Call_Client.Start();
 
-            //IPEndPoint ipServer = new IPEndPoint(IPAddress.Parse(AMC_SRV.SRV_IP)
-            //                                   , Convert.ToInt32(AMC_SRV.SRV_PORT));
-            //EndPoint epTemp = ipServer as EndPoint;
 
-            //Client = new AsyncTcpSession(epTemp);
-
-            //Client.Connected += Client_Connected;
-            //Client.Closed += Client_Closed;
-            //Client.DataReceived += Client_DataReceived;
-            //Client.Error += Client_Error; ;
-            //Client.SendingQueueSize = 0xffff;
-            
-            
             bgw_client.RunWorkerAsync();
         }
 
@@ -141,12 +133,12 @@ namespace Call_Program
 
         private void Set_ST()
         {
-            l_ST.Text = Vehicle_Status;
+            
         }
 
         private void Set_AREA()
         {
-            lb_AREA.Text = Vehicle_Area;
+            
         }
 
         static DateTime Link_T = DateTime.Now;
@@ -233,9 +225,9 @@ namespace Call_Program
         {
             try
             {
-                string _buf = string.Format("SEND,STB={0},AMC=NONE,CMD=CALL,GOAL={1},STATUS=CALL;", STB.NAME, STB.GOAL_NAME);
+                string _buf = $"{STB.GOAL_NAME}";//string.Format("SEND,STB={0},AMC=NONE,CMD=CALL,GOAL={1},STATUS=CALL;", STB.NAME, STB.GOAL_NAME);
 
-                Send_string(_buf);
+                aMR.Send(_buf);
                 Insert_System_Log(_buf);
             }
             catch (Exception ex)
@@ -299,9 +291,9 @@ namespace Call_Program
 
         public void Send_Server_Reset()
         {
-            string _buf = string.Format("SEND,STB={0},AMC=NONE,CMD=LINK_TEST,GOAL={1},STATUS=RESET;", STB.NAME, STB.GOAL_NAME);
+            //string _buf = string.Format("SEND,STB={0},AMC=NONE,CMD=LINK_TEST,GOAL={1},STATUS=RESET;", STB.NAME, STB.GOAL_NAME);
 
-            Call_Client.Send_Data(_buf);
+            //Call_Client.Send_Data(_buf);
         }
 
         private void Send_string(string msg)
@@ -563,9 +555,8 @@ namespace Call_Program
                                 pw = str_temp[1];                           
 
                         }
-                        AMR amr_temp = new AMR(name, ip, port, pw, "AMT");
-
-                        aMR = amr_temp;
+                        
+                        aMR = new AMR(name, ip, port, pw, "AMT");
                     }
                 }
             }
@@ -589,83 +580,7 @@ namespace Call_Program
                 {
                     Sec = (DateTime.Now - dstate_time).TotalSeconds;
 
-                    AMR_Status = aMR.Get_AMR_Status();
-                    Vehicle_Status = AMR_Status;
-
-                    if (AMR_Status == "NONE")
-                    {
-                        Message_Text = "접속 되지 않았습니다.";
-                    }
-                    else if (AMR_Status.Contains(STB.GOAL_NAME) == true)
-                    {
-                        Message_Text = string.Format("Vehicle이 {0}로 이동 중 입니다.", STB.NAME);
-                    }
-                    else if(AMR_Status.Contains("Executing") == true)
-                    {
-                        Message_Text = string.Format("Vehicle이 {0}로 이동 중 입니다.", STB.NAME);
-                    }
-                    else if(AMR_Status.Contains("Completed") == true)
-                    {
-                        Message_Text = string.Format("{0}에 도착 했습니다.", STB.NAME);
-                        Text = "도착";
-                    }
-                    else if(AMR_Status.Contains("Arrived") == true)
-                    {
-                        Message_Text = string.Format("{0}에 도착 했습니다.", STB.NAME);
-                    }
-                    else
-                        Message_Text = AMR_Status;
-                                       
                     
-                    if (isCall == true)
-                    {
-                        if(AMR_Status.ToUpper().Contains("DOCKED") == true)
-                        {
-                            //aMR.Send();
-                            aMR.Send(string.Format("executeMacro MOVE_{0}", STB.GOAL_NAME));
-                            isCall = false;
-                            System.Threading.Thread.Sleep(1000);
-                        }
-                        else if (AMR_Status.ToUpper().Contains(STB.GOAL_NAME.ToUpper()) == true)
-                        {
-                            isCall = false;
-                        }                        
-                    }
-
-                    // 20220530 Direct
-                    //if (Call_Client.Is_Connected() == true)
-                    //{
-                    //    if (Sec >= 10)
-                    //    {
-                    //        dstate_time = DateTime.Now;
-
-                    // Direct 방식에서는 불필요
-                    //        //Send_Link_Test();
-                    //        //Send_Get_AREA();
-                    //        //Send_Get_ST();
-                    //    }
-
-
-
-                    //    if ((DateTime.Now - Link_T).TotalMinutes >= 1)
-                    //    {
-                    //        dstate_time = DateTime.Now;
-                    //        Message_Text = "Link Test 실패";
-                    //        Call_Client.Close();
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    Call_Client.Connect();
-
-                    //    if ((DateTime.Now - Link_T).TotalSeconds >= 30)
-                    //    {
-                    //        Message_Text = "Link Test 실패";
-                    //    }
-
-                    //    System.Threading.Thread.Sleep(10000);
-                    //}
-
 
                     if (bgw_Display.IsBusy == false)
                     {
@@ -815,7 +730,6 @@ namespace Call_Program
             {
                 try
                 {
-                    lMessage.Text = Message_Text;
 
                     if(Message_Text.Contains("NONE") == false)
                     {
@@ -828,8 +742,30 @@ namespace Call_Program
                         pb_red.Visible = true;
                     }
 
-                    Set_ST();
-                    Set_AREA();
+                    if(aMR.Call == true)
+                    {
+                        pb_callOff.Visible = false;
+                        pb_callOn.Visible = true;
+                    }
+                    else
+                    {
+                        pb_callOff.Visible = true;
+                        pb_callOn.Visible = false;
+                    }
+                    
+
+                    if(aMR.MGZ == true)
+                    {
+                        pb_MGZOn.Visible = true;
+                        pb_MGZOff.Visible = false;
+                    }
+                    else
+                    {
+                        pb_MGZOn.Visible = false;
+                        pb_MGZOff.Visible = true;
+                    }
+
+                    
 
                     if (bgw_client.IsBusy == false)
                     {
@@ -860,29 +796,36 @@ namespace Call_Program
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Send_Server_Reset();
+            Init();
         }
 
         private void btn_Call_Click(object sender, EventArgs e)
-        {
-            if (isCall == true)
+        {   
+            if(aMR.Call == true)
             {
-                Message_Text = "이미 호출이 예약 되어 있습니다..";
-                Text = "이미 호출이 예약 되어 있습니다..";
+                MessageBox.Show("호출 명령 수행 중 입니다.");
+            }
+            else if(aMR.MGZ == true)
+            {
+                MessageBox.Show("자재가 있어 호출이 불가능 합니다.");
             }
             else
             {
-                Message_Text = "호출이 예약 되어 있습니다..";
-                Text = "호출이 예약 되어 있습니다..";
-                isCall = true;
+                Send_Call();
+                MessageBox.Show("호출 명령이 전송 되었습니다.");
             }
-            // 20220530 Direct
-            //Send_Call();
+
+
         }
 
         private void Set_Back_Color()
         {
             btn_Call.BackColor = Color.Lime;
+        }
+
+        private void pb_callOff_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

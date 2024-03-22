@@ -163,11 +163,11 @@ public class AsynchronousClient
                 //client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                 //    new AsyncCallback(ReceiveCallback), state);
 
-                Call_Program.Form1.SRV_Parse(state.sb.ToString());
+                //Call_Program.Form1.SRV_Parse(state.sb.ToString());
             }
             else
             {
-                // 모든 데이터가 도착했습니다. 응답 그것을 놓습니다.
+                
                 if (state.sb.Length > 1)
                 {
                     response = state.sb.ToString();

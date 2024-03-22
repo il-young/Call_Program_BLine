@@ -31,18 +31,24 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btn_Call = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.lMessage = new System.Windows.Forms.Label();
             this.bgw_client = new System.ComponentModel.BackgroundWorker();
             this.bgw_Display = new System.ComponentModel.BackgroundWorker();
             this.button2 = new System.Windows.Forms.Button();
             this.pb_red = new System.Windows.Forms.PictureBox();
             this.pb_green = new System.Windows.Forms.PictureBox();
-            this.lb_AREA = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.lb_st = new System.Windows.Forms.Label();
-            this.l_ST = new System.Windows.Forms.Label();
+            this.pb_callOff = new System.Windows.Forms.PictureBox();
+            this.pb_callOn = new System.Windows.Forms.PictureBox();
+            this.pb_MGZOff = new System.Windows.Forms.PictureBox();
+            this.pb_MGZOn = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pb_red)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_green)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_callOff)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_callOn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_MGZOff)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_MGZOn)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_Call
@@ -65,17 +71,6 @@
             this.button1.Text = "숨기기";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // lMessage
-            // 
-            this.lMessage.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lMessage.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lMessage.Location = new System.Drawing.Point(50, 217);
-            this.lMessage.Name = "lMessage";
-            this.lMessage.Size = new System.Drawing.Size(321, 46);
-            this.lMessage.TabIndex = 2;
-            this.lMessage.Text = "Message";
-            this.lMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // bgw_client
             // 
@@ -118,28 +113,6 @@
             this.pb_green.TabIndex = 4;
             this.pb_green.TabStop = false;
             // 
-            // lb_AREA
-            // 
-            this.lb_AREA.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lb_AREA.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lb_AREA.Location = new System.Drawing.Point(102, 129);
-            this.lb_AREA.Name = "lb_AREA";
-            this.lb_AREA.Size = new System.Drawing.Size(272, 46);
-            this.lb_AREA.TabIndex = 6;
-            this.lb_AREA.Text = "AREA";
-            this.lb_AREA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label1.Location = new System.Drawing.Point(12, 129);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 46);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "위치:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lb_st
             // 
             this.lb_st.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -151,30 +124,82 @@
             this.lb_st.Text = "상태:";
             this.lb_st.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // l_ST
+            // pb_callOff
             // 
-            this.l_ST.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.l_ST.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.l_ST.Location = new System.Drawing.Point(102, 175);
-            this.l_ST.Name = "l_ST";
-            this.l_ST.Size = new System.Drawing.Size(272, 46);
-            this.l_ST.TabIndex = 8;
-            this.l_ST.Text = "STATUS";
-            this.l_ST.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.pb_callOff.Image = global::Call_Program.Properties.Resources.circle_red;
+            this.pb_callOff.Location = new System.Drawing.Point(153, 179);
+            this.pb_callOff.Name = "pb_callOff";
+            this.pb_callOff.Size = new System.Drawing.Size(35, 35);
+            this.pb_callOff.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pb_callOff.TabIndex = 11;
+            this.pb_callOff.TabStop = false;
+            this.pb_callOff.Click += new System.EventHandler(this.pb_callOff_Click);
+            // 
+            // pb_callOn
+            // 
+            this.pb_callOn.Image = global::Call_Program.Properties.Resources.circle_green;
+            this.pb_callOn.Location = new System.Drawing.Point(153, 179);
+            this.pb_callOn.Name = "pb_callOn";
+            this.pb_callOn.Size = new System.Drawing.Size(35, 35);
+            this.pb_callOn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pb_callOn.TabIndex = 10;
+            this.pb_callOn.TabStop = false;
+            // 
+            // pb_MGZOff
+            // 
+            this.pb_MGZOff.Image = global::Call_Program.Properties.Resources.circle_red;
+            this.pb_MGZOff.Location = new System.Drawing.Point(299, 179);
+            this.pb_MGZOff.Name = "pb_MGZOff";
+            this.pb_MGZOff.Size = new System.Drawing.Size(35, 35);
+            this.pb_MGZOff.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pb_MGZOff.TabIndex = 13;
+            this.pb_MGZOff.TabStop = false;
+            // 
+            // pb_MGZOn
+            // 
+            this.pb_MGZOn.Image = global::Call_Program.Properties.Resources.circle_green;
+            this.pb_MGZOn.Location = new System.Drawing.Point(299, 179);
+            this.pb_MGZOn.Name = "pb_MGZOn";
+            this.pb_MGZOn.Size = new System.Drawing.Size(35, 35);
+            this.pb_MGZOn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pb_MGZOn.TabIndex = 12;
+            this.pb_MGZOn.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Location = new System.Drawing.Point(102, 189);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 16);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Call";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label3.Location = new System.Drawing.Point(240, 189);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 16);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "MGZ";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(386, 301);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.pb_MGZOff);
+            this.Controls.Add(this.pb_MGZOn);
+            this.Controls.Add(this.pb_callOff);
+            this.Controls.Add(this.pb_callOn);
             this.Controls.Add(this.lb_st);
-            this.Controls.Add(this.l_ST);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.lb_AREA);
             this.Controls.Add(this.pb_red);
             this.Controls.Add(this.pb_green);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.lMessage);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btn_Call);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -185,7 +210,12 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pb_red)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_green)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_callOff)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_callOn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_MGZOff)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_MGZOn)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -193,16 +223,18 @@
 
         private System.Windows.Forms.Button btn_Call;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label lMessage;
         private System.ComponentModel.BackgroundWorker bgw_client;
         private System.ComponentModel.BackgroundWorker bgw_Display;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.PictureBox pb_green;
         private System.Windows.Forms.PictureBox pb_red;
-        private System.Windows.Forms.Label lb_AREA;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lb_st;
-        private System.Windows.Forms.Label l_ST;
+        private System.Windows.Forms.PictureBox pb_callOff;
+        private System.Windows.Forms.PictureBox pb_callOn;
+        private System.Windows.Forms.PictureBox pb_MGZOff;
+        private System.Windows.Forms.PictureBox pb_MGZOn;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 
